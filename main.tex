@@ -1,0 +1,212 @@
+\documentclass{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}		% Can be removed after putting your text content
+% \usepackage{natbib} % Causes issues with submission to arxiv
+\usepackage{doi}
+
+\usepackage{hyperref, url}
+\usepackage{amsfonts, amsmath, amssymb, parskip, bbm}
+\usepackage{xcolor, graphicx, tikz-cd, caption, subcaption}
+\usepackage{algorithmic, algorithm}
+\usepackage{verbatim}
+\usepackage{mathrsfs}
+
+\usepackage{amsthm}  % For proof
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+% https://www.overleaf.com/learn/latex/Questions/The_journal_says_%22don%27t_use_BibTeX%3B_paste_the_contents_of_the_.bbl_file_into_the_.tex_file%22._How_do_I_do_this_on_Overleaf%3F
+
+\title{Inequalites Cookbook}
+
+%\date{September 9, 1985}	% Here you can change the date presented in the paper title
+%\date{} 					% Or removing it
+
+\author{
+  \hspace{1mm}James Chok \\
+  School of Mathematics and \\
+  Maxwell Institute for Mathematical Sciences, \\
+  The University of Edinburgh,\\
+  Edinburgh,\\
+  EH9 3FD, \\
+  United Kingdom\\
+  \texttt{james.chok@ed.ac.uk} \\
+}
+
+% Uncomment to remove the date
+%\date{}
+
+% Uncomment to override  the `A preprint' in the header
+%\renewcommand{\headeright}{Technical Report}
+%\renewcommand{\undertitle}{Technical Report}
+\renewcommand{\shorttitle}{\textit{arXiv} Template}
+
+%%% Add PDF metadata to help others organize their library
+%%% Once the PDF is generated, you can check the metadata with
+%%% $ pdfinfo template.pdf
+\hypersetup{
+pdftitle={A template for the arxiv style},
+pdfsubject={math.NA},
+pdfauthor={James Chok, Geoffrey M. Vasil},
+pdfkeywords={First keyword, Second keyword, More},
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A collection of inequalities with some proofs.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+% keywords can be removed
+\keywords{Inequalities}
+
+\section{Convex Functions}
+If $f$ is convex, then for all $x,y$ and $t\in[0,1]$
+\begin{align}
+    f(tx + (1-t)y)\ &\leq\ tf(x_1) + (1-t)f(y)
+\end{align}
+
+If $f$ is differentiable for all $x, y$, convexity is equivalent to 
+\begin{itemize}
+    \item The first-order condition
+    \begin{equation}
+    f(y)\ \geq\ f(x) +  \langle \nabla f(x), y - x\rangle
+    \end{equation}
+    \item Montone gradient condition
+    \begin{equation}
+        \langle f(x) - \nabla f(y), x - y\rangle \geq 0
+    \end{equation}
+\end{itemize}
+
+\newpage
+% https://xingyuzhou.org/blog/notes/strong-convexity
+\section{Strong Convexity}
+A differentiable function is strongly convex if for some $m>0$ and all $x,y$
+\begin{equation}
+    f(y)\ \geq\ f(x) + \langle\nabla f(x), y-x\rangle + \frac{m}{2}\|y-x\|^2.
+\end{equation}
+The following conditions are equivalent to strong-convexity
+\begin{itemize}
+    \item Using the first-order condition of convexity, $g$ is convex
+    \begin{equation}
+        g(x)\ =\ f(x) - \frac{\mu}{2}\|x\|^2
+    \end{equation}
+    \item Using monotone gradient condition of convexity for $g$,
+    \begin{equation}
+        \langle \nabla f(x) - \nabla f(y), x - y\rangle\ \geq\ \mu\|x-y\|^2
+    \end{equation}
+    \item Using convexity of $g$, for $t\in[0,1]$
+    \begin{equation}
+        f(tx + (1-t)y)\ \leq\ tf(x) + (1-t)f(y) - \frac{t(1-t)}{2}\|x-y\|^2.
+    \end{equation}
+\end{itemize}
+
+The following are implied by strong convexity
+\begin{itemize}
+    \item Minimizing the strong convexity condition w.r.t $y$, gives the Polyack-Lojasiewicz inequality
+    \begin{equation}
+        \frac{1}{2}\|\nabla f(x)\|^2\ \geq\ \mu(f(x) - f(x^*))
+    \end{equation}
+    \item Using Cauchy-Schwartz
+    \begin{equation}
+        \|\nabla f(x) - \nabla f(y)\|\ \geq\ \mu\|x-y\|
+    \end{equation}
+    \item Using $\phi_x(z) = f(z) - \langle\nabla f(x), z\rangle$ is strongly convex with the same $\mu$,
+    \begin{equation}
+        f(y)\ \leq\ f(x) + \langle f(x), y-x\rangle + \frac{1}{2\mu}\|\nabla f(y) - \nabla f(x)\|^2
+    \end{equation}
+    \item Trivally,
+    \begin{equation}
+        \langle \nabla f(x) - \nabla f(y), x - y\rangle\ \leq\ \frac{1}{\mu}\|\nabla f(x) - \nabla f(y)\|^2
+    \end{equation}
+\end{itemize}
+
+% https://en.wikipedia.org/wiki/Convex_function#Strongly_convex_functions
+If $\|\nabla^2 f\|\geq m$, then $f$ is strongly convex.
+
+\newpage
+% https://xingyuzhou.org/blog/notes/Lipschitz-gradient
+\section{Lipschitz Gradient}
+A differential function $f$ has $L$-Lipschitz continuous gradient if for some $L>0$
+\begin{equation}
+    \|\nabla f(x) - \nabla f(y)\|\ \leq\ L\|x-y\|
+\end{equation}
+
+This implies
+\begin{equation}
+    g(x)\ =\ \frac{L}{2}\|x\|^2 - f(x)
+\end{equation}
+is convex. As such, the following conditions hold
+\begin{align}
+    &f(y)\ \leq\ f(x) + \langle \nabla f(x), y-x\rangle + \frac{L}{2}\|y-x\|^2\\
+    &\langle \nabla f(x) - \nabla f(y), x - y\rangle\ \leq\ L\|x-y\|^2\\
+    &f(tx + (1-t)y)\ \geq\ tf(x) + (1-t)f(y) - \frac{t(1-t)L}{2}\|x-y\|^2
+\end{align}
+
+If $f$ is assumed to be convex, then the above relationships are equivalent. Moreover, the following conditions are also equivalent
+\begin{align}
+    &f(y)\ \geq\ f(x) + \langle \nabla f(x), y-x\rangle + \frac{1}{2L}\|\nabla f(y) - \nabla f(x)\|^2\\
+    &\langle \nabla f(x) - \nabla f(y), x-y\rangle\ \geq\ \frac{1}{L}\|\nabla f(x) - \nabla f(y)\|^2\\
+    &f(tx - (1-t)y)\ \leq tf(x) + (1-t)f(y) - \frac{t(1-t)}{2L}\|\nabla f(x) - \nabla f(y)\|^2
+\end{align}
+
+
+\newpage
+\section{Asymptotically Convex}
+\subsection{Asymptotically Strongly Convex}
+A function is asymptotically strongly convex if for all $\|x_0\|, \|x_1\|\geq R$, for some $R>0$
+\begin{equation}
+    \langle \nabla f(x_0) - \nabla f(x_1), x_0 - x_1\rangle\ \geq\ m\|x_0 - x_1\|^2.
+\end{equation}
+That is, outside of a ball centered at the origin, $f$ is strongly convex.
+
+If $f$ is assumed to have Lipschitz continuous gradient, then there exists some $M>0$ such that
+\begin{equation}
+    \langle \nabla f(x_0) - \nabla f(x_1), x_0 - x_1\rangle\ \geq\ m\|x_0-x_1\|^2 - M,\qquad\forall x,y.
+\end{equation}
+\begin{proof}
+    Since $\nabla f$ is $L$-Lipschitz
+    \begin{align}
+        |\langle \nabla f(x_0) - \nabla f(x_1), x_0 - x_1\rangle|\ &\leq\ \|\nabla f(x_0) - \nabla f(x_1)\|\|x_0 - x_1\|\\
+        &\leq L\|x_0-x_1\|^2.
+    \end{align}
+    Then for $\|x_0\|, \|x_1\|\leq R$,
+    \begin{equation}
+        |\langle \nabla f(x_0) - \nabla f(x_1), x_0 - x_1\rangle|\ \leq LR^2,
+    \end{equation}
+    and
+    \begin{equation}
+        m\|x_0 - x_1\|^2\ \leq\ mR^2.
+    \end{equation}
+    Thus, for all $x_0, x_1$
+    \begin{equation}
+        \langle \nabla f(x_0) - \nabla f(x_1), x_0 - x_1\rangle\ \geq\ m\|x_0-x_1\|^2 - (m+L)R^2.
+    \end{equation}
+    
+\end{proof}
+
+\subsection{Asymptotically Stronly Co-coercive}
+This definition is given in \cite{bourabee2023}. There exists $R\geq0$, $K,L_2>0$ such that
+\begin{equation}
+    \langle x - y, \nabla f(x) - \nabla f(y)\rangle\ \geq\ K\|x-y\|^2 + \frac{1}{L^2}\|\nabla f(x) - \nabla f(y)\|,
+\end{equation}
+for $\|x-y\|\geq R$.
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{references.bib}
+\end{document}
